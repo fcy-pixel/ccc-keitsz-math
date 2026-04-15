@@ -16,7 +16,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.firestore();
 
 const GRADES = [
   { id: "p1", label: "一年級" },

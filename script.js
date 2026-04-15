@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTopicChips();
   populateFormSelects();
 
-  // 從 Firebase 載入教件（即時同步）
-  db.ref("math-resources").on("value", (snapshot) => {
+  // 從 Firestore 載入教件（即時同步）
+  db.collection("math-resources").orderBy("date", "desc").onSnapshot((snapshot) => {
     resources = [];
-    snapshot.forEach((child) => {
-      const r = child.val();
-      r.firebaseKey = child.key;
+    snapshot.forEach((doc) => {
+      const r = doc.data();
+      r.firebaseKey = doc.id;
       resources.push(r);
     });
     renderStats();
@@ -211,8 +211,8 @@ function handleSubmit(e) {
     tags,
   };
 
-  // 儲存到 Firebase（永久保存）
-  db.ref("math-resources").push(newResource)
+  // 儲存到 Firestore（永久保存）
+  db.collection("math-resources").add(newResource)
     .then(() => {
       document.getElementById("form-success").style.display = "block";
       document.getElementById("add-form").reset();
