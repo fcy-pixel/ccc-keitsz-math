@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中華基督教會基慈小學 — 數學科教件庫</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>" />
+</head>
+<body>
+  <!-- ======== 頂部導覽 ======== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">📐</span>
+        <div>
+          <h1>數學科教件庫</h1>
+          <p class="school-name">中華基督教會基慈小學</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#resources" class="active">教件瀏覽</a>
+        <a href="#add">新增教件</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======== 主橫幅 ======== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h2>Vibe Coding × 數學教學</h2>
+      <p>老師們利用 AI 工具製作的互動數學教件，按年級及課題分類，隨時使用。</p>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- ======== 篩選區 ======== -->
+  <section class="filter-section" id="resources">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>年級</label>
+          <div class="filter-chips" id="grade-chips"></div>
+        </div>
+        <div class="filter-group">
+          <label>課題</label>
+          <div class="filter-chips" id="topic-chips"></div>
+        </div>
+        <div class="filter-group search-group">
+          <label>搜尋</label>
+          <input type="text" id="search-input" placeholder="輸入關鍵字…" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 教件列表 ======== -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="results-info" id="results-info"></div>
+      <div class="resource-grid" id="resource-grid"></div>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <span class="empty-icon">🔍</span>
+        <p>找不到符合條件的教件</p>
+        <button class="btn btn-secondary" onclick="clearFilters()">清除篩選</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 新增教件表格 ======== -->
+  <section class="add-section" id="add">
+    <div class="container">
+      <h2>📤 新增教件</h2>
+      <p class="section-desc">老師可透過以下表格新增 Vibe Coding 製作的 GitHub Pages 教件連結。</p>
+      <form id="add-form" class="add-form" onsubmit="return handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="f-title">教件名稱 *</label>
+            <input type="text" id="f-title" required placeholder="例：加法練習互動遊戲" />
+          </div>
+          <div class="form-field">
+            <label for="f-teacher">老師姓名 *</label>
+            <input type="text" id="f-teacher" required placeholder="例：陳老師" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="f-grade">年級 *</label>
+            <select id="f-grade" required>
+              <option value="">請選擇…</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="f-topic">課題 *</label>
+            <select id="f-topic" required>
+              <option value="">請選擇…</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="f-url">GitHub Pages 網址 *</label>
+          <input type="url" id="f-url" required placeholder="https://username.github.io/project/" />
+        </div>
+        <div class="form-field">
+          <label for="f-desc">簡介</label>
+          <textarea id="f-desc" rows="3" placeholder="簡述教件內容及用途…"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="f-tags">標籤（以逗號分隔）</label>
+          <input type="text" id="f-tags" placeholder="例：加法, 互動遊戲" />
+        </div>
+        <button type="submit" class="btn btn-primary">新增教件</button>
+      </form>
+      <div id="form-success" class="form-success" style="display:none">
+        ✅ 教件已成功新增！
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 頁尾 ======== -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 中華基督教會基慈小學 · 數學科</p>
+      <p class="footer-note">本網站的教件由老師利用 Vibe Coding 技術製作</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
