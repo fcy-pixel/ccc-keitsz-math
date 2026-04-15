@@ -1,7 +1,21 @@
 // ============================================================
 // 中華基督教會基慈小學 — 數學科教件資料庫
-// 老師可以在此新增教件資料，或透過網站的「新增教件」功能新增
+// Firebase 實時資料庫 — 新增的教件會永久保存
 // ============================================================
+
+// ---- Firebase 初始化 ----
+const firebaseConfig = {
+  apiKey: "AIzaSyBJUYW3e-yluJ_3Y_CzNPz3f7nNyadPf3g",
+  authDomain: "money-fd0c6.firebaseapp.com",
+  databaseURL: "https://money-fd0c6-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "money-fd0c6",
+  storageBucket: "money-fd0c6.firebasestorage.app",
+  messagingSenderId: "296745858605",
+  appId: "1:296745858605:web:3727a45072b126fb8d2aa4",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 const GRADES = [
   { id: "p1", label: "一年級" },
@@ -22,9 +36,8 @@ const TOPICS = [
   { id: "general", label: "通用" },
 ];
 
-// ---- 教件列表 (請按格式新增) ----
-let resources = [
-];
+// ---- 教件列表 (由 Firebase 載入) ----
+let resources = [];
 
 // ---- 工具函數 ----
 function getNextId() {

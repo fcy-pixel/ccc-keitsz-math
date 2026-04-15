@@ -9,11 +9,21 @@ let searchQuery = "";
 
 // ---- 初始化 ----
 document.addEventListener("DOMContentLoaded", () => {
-  renderStats();
   renderGradeChips();
   renderTopicChips();
   populateFormSelects();
-  renderResources();
+
+  // 從 Firebase 載入教件（即時同步）
+  db.ref("math-resources").on("value", (snapshot) => {
+    resources = [];
+    snapshot.forEach((child) => {
+      const r = child.val();
+      r.firebaseKey = child.key;
+      resources.push(r);
+    });
+    renderStats();
+    renderResources();
+  });
 
   document
     .getElementById("search-input")
@@ -191,7 +201,6 @@ function handleSubmit(e) {
     : [];
 
   const newResource = {
-    id: getNextId(),
     title,
     description: desc,
     grade,
@@ -202,22 +211,18 @@ function handleSubmit(e) {
     tags,
   };
 
-  resources.push(newResource);
-  renderStats();
-  renderResources();
-
-  // 顯示成功訊息
-  document.getElementById("form-success").style.display = "block";
-  document.getElementById("add-form").reset();
-  setTimeout(() => {
-    document.getElementById("form-success").style.display = "none";
-  }, 3000);
-
-  // 輸出到 console 方便老師複製到 data.js
-  console.log(
-    "請將以下內容新增至 data.js 的 resources 陣列中：\n" +
-      JSON.stringify(newResource, null, 2)
-  );
+  // 儲存到 Firebase（永久保存）
+  db.ref("math-resources").push(newResource)
+    .then(() => {
+      document.getElementById("form-success").style.display = "block";
+      document.getElementById("add-form").reset();
+      setTimeout(() => {
+        document.getElementById("form-success").style.display = "none";
+      }, 3000);
+    })
+    .catch((err) => {
+      alert("儲存失敗：" + err.message);
+    });
 
   return false;
 }
