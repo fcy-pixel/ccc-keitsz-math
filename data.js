@@ -5,13 +5,14 @@
 
 // ---- Firebase 初始化 ----
 const firebaseConfig = {
-  apiKey: "AIzaSyBJUYW3e-yluJ_3Y_CzNPz3f7nNyadPf3g",
-  authDomain: "money-fd0c6.firebaseapp.com",
-  databaseURL: "https://money-fd0c6-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "money-fd0c6",
-  storageBucket: "money-fd0c6.firebasestorage.app",
-  messagingSenderId: "296745858605",
-  appId: "1:296745858605:web:3727a45072b126fb8d2aa4",
+  apiKey: "AIzaSyBFLXK-2dxek_a-0UYHcLPQaTC0XdLxXBY",
+  authDomain: "mathsweb-a3653.firebaseapp.com",
+  databaseURL: "https://mathsweb-a3653-default-rtdb.firebaseio.com",
+  projectId: "mathsweb-a3653",
+  storageBucket: "mathsweb-a3653.firebasestorage.app",
+  messagingSenderId: "40184066393",
+  appId: "1:40184066393:web:55fcd23404a969330d9c48",
+  measurementId: "G-LT65MMZMV6",
 };
 
 firebase.initializeApp(firebaseConfig);
