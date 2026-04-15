@@ -71,8 +71,9 @@ body {
   gap: 10px;
 }
 
-.logo-icon {
-  font-size: 2rem;
+.logo-img {
+  width: 44px;
+  height: auto;
 }
 
 .logo h1 {
