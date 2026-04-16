@@ -6,6 +6,17 @@
 let selectedGrade = null;
 let selectedTopic = null;
 let searchQuery = "";
+let isAdmin = false;
+let pendingDeleteKey = null;
+
+// ---- 管理員密碼雜湊 (SHA-256) ----
+const ADMIN_HASH = "4f400f62c74ca1998475e851be52d67d1df5c69853b43bd15e2829571e8d1611";
+
+async function sha256(text) {
+  const data = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
 
 // ---- 初始化 ----
 document.addEventListener("DOMContentLoaded", () => {
@@ -159,6 +170,7 @@ function renderResources() {
         <span>${escapeHtml(r.teacher)} · ${r.date || ""}</span>
         <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer">開啟教件 ↗</a>
       </div>
+      ${isAdmin ? `<button class="card-delete-btn" onclick="openDeleteModal('${r.firebaseKey}', '${escapeHtml(r.title).replace(/'/g, "\\&#39;")}')">🗑️ 刪除此教件</button>` : ""}
     </div>
   `
     )
@@ -232,4 +244,70 @@ function escapeHtml(str) {
   const div = document.createElement("div");
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
+}
+
+// ---- 管理員功能 ----
+function toggleAdminModal() {
+  if (isAdmin) {
+    isAdmin = false;
+    updateAdminUI();
+    renderResources();
+    return;
+  }
+  document.getElementById("admin-modal").style.display = "flex";
+  document.getElementById("admin-password").value = "";
+  document.getElementById("admin-error").style.display = "none";
+  setTimeout(() => document.getElementById("admin-password").focus(), 100);
+}
+
+function closeAdminModal() {
+  document.getElementById("admin-modal").style.display = "none";
+}
+
+async function adminLogin() {
+  const pw = document.getElementById("admin-password").value;
+  const hash = await sha256(pw);
+  if (hash === ADMIN_HASH) {
+    isAdmin = true;
+    closeAdminModal();
+    updateAdminUI();
+    renderResources();
+  } else {
+    document.getElementById("admin-error").style.display = "block";
+    document.getElementById("admin-password").value = "";
+    document.getElementById("admin-password").focus();
+  }
+}
+
+function updateAdminUI() {
+  const toggle = document.getElementById("admin-toggle");
+  if (isAdmin) {
+    toggle.innerHTML = "🔓 登出管理員";
+    toggle.classList.add("admin-active");
+  } else {
+    toggle.innerHTML = "🔒 管理員";
+    toggle.classList.remove("admin-active");
+  }
+}
+
+function openDeleteModal(firebaseKey, title) {
+  pendingDeleteKey = firebaseKey;
+  document.getElementById("delete-title").textContent = title;
+  document.getElementById("delete-modal").style.display = "flex";
+}
+
+function closeDeleteModal() {
+  document.getElementById("delete-modal").style.display = "none";
+  pendingDeleteKey = null;
+}
+
+function confirmDelete() {
+  if (!pendingDeleteKey || !isAdmin) return;
+  db.collection("math-resources").doc(pendingDeleteKey).delete()
+    .then(() => {
+      closeDeleteModal();
+    })
+    .catch((err) => {
+      alert("刪除失敗：" + err.message);
+    });
 }
