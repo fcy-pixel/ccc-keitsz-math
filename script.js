@@ -10,7 +10,7 @@ let isAdmin = false;
 let pendingDeleteKey = null;
 
 // ---- 管理員密碼雜湊 (SHA-256) ----
-const ADMIN_HASH = "4f400f62c74ca1998475e851be52d67d1df5c69853b43bd15e2829571e8d1611";
+const ADMIN_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
 
 async function sha256(text) {
   const data = new TextEncoder().encode(text);
