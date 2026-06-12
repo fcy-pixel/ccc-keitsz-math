@@ -4,10 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>中華基督教會基慈小學 — 數學科教件庫</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="logo.png" />
 </head>
 <body>
+  <!-- ======== 漂浮背景裝飾 ======== -->
+  <div class="deco" id="deco"></div>
+
   <!-- ======== 頂部導覽 ======== -->
   <header class="header">
     <div class="header-inner">
@@ -19,8 +24,8 @@
         </div>
       </div>
       <nav class="nav-links">
-        <a href="#resources" class="active">教件瀏覽</a>
-        <a href="#add">新增教件</a>
+        <a href="#resources" class="active">🧩 教件瀏覽</a>
+        <a href="#add">📤 新增教件</a>
         <a href="javascript:void(0)" id="admin-toggle" onclick="toggleAdminModal()">🔒 管理員</a>
       </nav>
     </div>
@@ -29,9 +34,45 @@
   <!-- ======== 主橫幅 ======== -->
   <section class="hero">
     <div class="hero-inner">
-      <h2>Vibe Coding × 數學教學</h2>
-      <p>老師們利用 AI 工具製作的互動數學教件，按年級及課題分類，隨時使用。</p>
+      <div class="hero-mascot" aria-hidden="true">
+        <svg viewBox="0 0 120 120" class="mascot-svg">
+          <!-- 計算機小子 -->
+          <rect x="22" y="18" width="76" height="92" rx="14" fill="#4f6df5"/>
+          <rect x="22" y="18" width="76" height="92" rx="14" fill="none" stroke="#36479e" stroke-width="3"/>
+          <rect x="32" y="28" width="56" height="26" rx="8" fill="#dff3ff"/>
+          <!-- 眼睛 -->
+          <circle cx="48" cy="41" r="6.5" fill="#2b3550"/>
+          <circle cx="72" cy="41" r="6.5" fill="#2b3550"/>
+          <circle cx="50" cy="39" r="2.2" fill="#fff"/>
+          <circle cx="74" cy="39" r="2.2" fill="#fff"/>
+          <!-- 腮紅 -->
+          <circle cx="38" cy="48" r="3.5" fill="#ff9d9d" opacity=".8"/>
+          <circle cx="82" cy="48" r="3.5" fill="#ff9d9d" opacity=".8"/>
+          <!-- 按鈕 -->
+          <g fill="#ffd93d">
+            <rect x="32" y="62" width="14" height="12" rx="4"/>
+            <rect x="53" y="62" width="14" height="12" rx="4"/>
+            <rect x="74" y="62" width="14" height="12" rx="4"/>
+            <rect x="32" y="80" width="14" height="12" rx="4"/>
+            <rect x="74" y="80" width="14" height="12" rx="4"/>
+          </g>
+          <rect x="53" y="80" width="14" height="12" rx="4" fill="#ff8c3b"/>
+          <!-- 笑嘴（等號鍵） -->
+          <rect x="32" y="96" width="56" height="8" rx="4" fill="#2ecc71"/>
+          <!-- 手手 -->
+          <circle cx="16" cy="70" r="7" fill="#4f6df5" stroke="#36479e" stroke-width="3"/>
+          <circle cx="104" cy="58" r="7" fill="#4f6df5" stroke="#36479e" stroke-width="3"/>
+        </svg>
+        <span class="mascot-spark s1">➕</span>
+        <span class="mascot-spark s2">✖️</span>
+        <span class="mascot-spark s3">⭐</span>
+      </div>
+      <h2>一齊探索好玩嘅數學世界！</h2>
+      <p>老師們親手製作的互動數學教件，按年級及課題分類，撳一下即刻玩得！</p>
       <div class="stats" id="stats"></div>
+    </div>
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#eaf6ff"/></svg>
     </div>
   </section>
 
@@ -40,15 +81,15 @@
     <div class="container">
       <div class="filter-bar">
         <div class="filter-group">
-          <label>年級</label>
+          <label>🎒 年級</label>
           <div class="filter-chips" id="grade-chips"></div>
         </div>
         <div class="filter-group">
-          <label>課題</label>
+          <label>📚 課題</label>
           <div class="filter-chips" id="topic-chips"></div>
         </div>
         <div class="filter-group search-group">
-          <label>搜尋</label>
+          <label>🔍 搜尋</label>
           <input type="text" id="search-input" placeholder="輸入關鍵字…" />
         </div>
       </div>
@@ -61,9 +102,9 @@
       <div class="results-info" id="results-info"></div>
       <div class="resource-grid" id="resource-grid"></div>
       <div class="empty-state" id="empty-state" style="display:none">
-        <span class="empty-icon">🔍</span>
-        <p>找不到符合條件的教件</p>
-        <button class="btn btn-secondary" onclick="clearFilters()">清除篩選</button>
+        <span class="empty-icon">🕵️</span>
+        <p>咦？找不到符合條件的教件喎…</p>
+        <button class="btn btn-secondary" onclick="clearFilters()">清除篩選，全部再睇一次</button>
       </div>
     </div>
   </section>
@@ -71,49 +112,51 @@
   <!-- ======== 新增教件表格 ======== -->
   <section class="add-section" id="add">
     <div class="container">
-      <h2>📤 新增教件</h2>
-      <p class="section-desc">老師可透過以下表格新增 Vibe Coding 製作的教件連結。</p>
-      <form id="add-form" class="add-form" onsubmit="return handleSubmit(event)">
-        <div class="form-row">
-          <div class="form-field">
-            <label for="f-title">教件名稱 *</label>
-            <input type="text" id="f-title" required placeholder="例：加法練習互動遊戲" />
+      <div class="add-card">
+        <h2>📤 新增教件</h2>
+        <p class="section-desc">老師可透過以下表格，將自己製作的互動教件加入教件庫。</p>
+        <form id="add-form" class="add-form" onsubmit="return handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="f-title">教件名稱 *</label>
+              <input type="text" id="f-title" required placeholder="例：加法練習互動遊戲" />
+            </div>
+            <div class="form-field">
+              <label for="f-teacher">老師姓名 *</label>
+              <input type="text" id="f-teacher" required placeholder="例：陳老師" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="f-grade">年級 *</label>
+              <select id="f-grade" required>
+                <option value="">請選擇…</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="f-topic">課題 *</label>
+              <select id="f-topic" required>
+                <option value="">請選擇…</option>
+              </select>
+            </div>
           </div>
           <div class="form-field">
-            <label for="f-teacher">老師姓名 *</label>
-            <input type="text" id="f-teacher" required placeholder="例：陳老師" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label for="f-grade">年級 *</label>
-            <select id="f-grade" required>
-              <option value="">請選擇…</option>
-            </select>
+            <label for="f-url">網址 *</label>
+            <input type="url" id="f-url" required placeholder="https://…" />
           </div>
           <div class="form-field">
-            <label for="f-topic">課題 *</label>
-            <select id="f-topic" required>
-              <option value="">請選擇…</option>
-            </select>
+            <label for="f-desc">簡介</label>
+            <textarea id="f-desc" rows="3" placeholder="簡述教件內容及用途…"></textarea>
           </div>
+          <div class="form-field">
+            <label for="f-tags">標籤（以逗號分隔）</label>
+            <input type="text" id="f-tags" placeholder="例：加法, 互動遊戲" />
+          </div>
+          <button type="submit" class="btn btn-primary">🚀 新增教件</button>
+        </form>
+        <div id="form-success" class="form-success" style="display:none">
+          🎉 教件已成功新增！
         </div>
-        <div class="form-field">
-          <label for="f-url">網址 *</label>
-          <input type="url" id="f-url" required placeholder="https://username.github.io/project/" />
-        </div>
-        <div class="form-field">
-          <label for="f-desc">簡介</label>
-          <textarea id="f-desc" rows="3" placeholder="簡述教件內容及用途…"></textarea>
-        </div>
-        <div class="form-field">
-          <label for="f-tags">標籤（以逗號分隔）</label>
-          <input type="text" id="f-tags" placeholder="例：加法, 互動遊戲" />
-        </div>
-        <button type="submit" class="btn btn-primary">新增教件</button>
-      </form>
-      <div id="form-success" class="form-success" style="display:none">
-        ✅ 教件已成功新增！
       </div>
     </div>
   </section>
@@ -122,7 +165,7 @@
   <footer class="footer">
     <div class="container">
       <p>© 2026 中華基督教會基慈小學 · 數學科</p>
-      <p class="footer-note">本網站的教件由老師利用 Vibe Coding 技術製作</p>
+      <p class="footer-note">本教件庫由數學科老師共同建立 🧮✨</p>
     </div>
   </footer>
 
@@ -156,5 +199,21 @@
   <script src="https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore-compat.js"></script>
   <script src="data.js"></script>
   <script src="script.js"></script>
+  <script>
+    // 漂浮數學符號背景
+    (function () {
+      const symbols = ["➕", "➖", "✖️", "➗", "⭐", "🔢", "📐", "🧮"];
+      const deco = document.getElementById("deco");
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement("span");
+        s.textContent = symbols[i % symbols.length];
+        s.style.left = (3 + Math.random() * 94) + "%";
+        s.style.animationDuration = (16 + Math.random() * 20) + "s";
+        s.style.animationDelay = (-Math.random() * 24) + "s";
+        s.style.fontSize = (1 + Math.random() * 1.3) + "rem";
+        deco.appendChild(s);
+      }
+    })();
+  </script>
 </body>
 </html>

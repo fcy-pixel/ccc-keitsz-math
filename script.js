@@ -129,6 +129,15 @@ function topicLabel(id) {
   return t ? t.label : id;
 }
 
+const TOPIC_EMOJI = {
+  number: "🔢",
+  algebra: "✖️",
+  measure: "📏",
+  shape: "🔷",
+  data: "📊",
+  general: "🎯",
+};
+
 // ---- 渲染教件卡片 ----
 function renderResources() {
   const filtered = getFilteredResources();
@@ -157,7 +166,7 @@ function renderResources() {
         <span class="card-title">${escapeHtml(r.title)}</span>
         <div class="card-badges">
           <span class="badge badge-grade">${gradeLabel(r.grade)}</span>
-          <span class="badge badge-topic">${topicLabel(r.topic)}</span>
+          <span class="badge badge-topic">${TOPIC_EMOJI[r.topic] || "📚"} ${topicLabel(r.topic)}</span>
         </div>
       </div>
       <p class="card-desc">${escapeHtml(r.description || "")}</p>
